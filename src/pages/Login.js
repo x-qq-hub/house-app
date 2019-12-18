@@ -1,6 +1,9 @@
 import React from 'react';
 import { Flex, List, InputItem, WingBlank, WhiteSpace, Button } from 'antd-mobile';
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router-dom';
+
+import { getLogin } from '../apis/apis'
+
 
 export default class Login extends React.Component {
     state = {
@@ -13,23 +16,35 @@ export default class Login extends React.Component {
         })
 
     }
-    getpwd=(pwd)=>{
+    getpwd = (pwd) => {
         this.setState({
             pwd
         })
 
     };
-    login=()=>{
+    login = () => {
         // 获取表单数据，提交到后端
-        let {phoneNum,pwd}=this.state
-        console.log(phoneNum,pwd);
+       const {phoneNum,pwd}=this.state;
+        getLogin({password:pwd,phoneNum})
+            .then((data) => {
+                const {token}=data
+                if(token){
+                // 将token存到本地
+                localStorage.setItem('token', token)
+                console.log(localStorage.getItem('token'))
+                this.props.history.replace('/');
+                }else{
+                    console.log('登录失败');
+                }
+            }
+            )
     }
     render() {
         let { phoneNum, pwd } = this.state
         // console.log(phoneNum, pwd);
         return (
             <div id="login">
-                <Flex justify="center" style={{ margin: 50 }}>
+                <Flex justify="center" style={{ margin: 30 }}>
                     <img src={require('../assets/imgs/logo.png')} style={{ width: 150, height: 150 }} />
                 </Flex>
                 <WingBlank size="lg">
@@ -49,10 +64,11 @@ export default class Login extends React.Component {
                         <Link to='/regist' style={{ color: '#43CE86' }}>手机快速注册</Link>
                         <Link to='/forgot' style={{ color: '#43CE86' }}>忘记密码</Link>
                     </Flex>
+                    <Flex justify="center" style={{ marginTop: 150 }}>
+                        <p style={{ color: '#888' }}>登录/注册代表同意《黑市的霸王条款》</p>
+                    </Flex>
                 </WingBlank>
-                <Flex justify="center" style={{ marginTop: 150 }}>
-                    <p style={{ color: '#888' }}>登录/注册代表同意《黑市的霸王条款》</p>
-                </Flex>
+
             </div>
         )
     }

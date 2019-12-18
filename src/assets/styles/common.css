@@ -1,13 +1,25 @@
-html,body{
+html,
+body {
     margin: 0;
-    padding:0;
+    padding: 0;
     width: 100%;
     height: 100%;
     background: #fff;
 }
+
 .my-radio .am-radio {
     padding: 2.5px;
     border: 1px solid #ccc;
     border-radius: 50%;
     margin-right: 5px;
-  }
+}
+
+
+#container {
+    /* width: 300px; */
+    width: 100%;
+    /* height: 180px; */
+}
+.info {
+    width: 20rem;
+}
